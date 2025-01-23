@@ -1,32 +1,57 @@
 # Problem 2: Hand-on Experience with Open Source Search Engine
+
 Pian Wan, pianwan@gatech.edu
 
 ## Introduction
-In this assignment, a toy search engine with documents from `https://en.wikipedia.org/wiki` is created.
+
+In this assignment, a toy search engine with documents from `https://en.wikipedia.org/wiki` is built. This search engine will crawl random documents from wikipedia and create index for search.
 
 ## Build
+
 To build this toy project, you will need install `maven` and `jdk21`first, then type:
+
 ```bash
 mvn clean package
 ```
+
 ## Run
-After build, you can find the excutable jar file in `./target`, to crawl/create index/search, use
+
+Confirm your jdk version
+
+```bash
+java --version
+```
+
+It should output something like
+
+```text
+openjdk 21.0.5 2024-10-15 LTS
+OpenJDK Runtime Environment Zulu21.38+21-CA (build 21.0.5+11-LTS)
+OpenJDK 64-Bit Server VM Zulu21.38+21-CA (build 21.0.5+11-LTS, mixed mode, sharing)
+```
+
+After build, you can find the executable jar file in `./target`, to crawl/create index/search, use
+
 ```bash
 java -jar LuceneDemo-1.0-SNAPSHOT.jar
 ```
+
 The program will be blocked and waiting for your command as input.
 
 To craw 100 random documents from `https://en.wikipedia.org/wiki`, input
+
 ```text
 craw 100
 ```
 
 To create index for crawled documents, input
+
 ```text
 index
 ```
 
 To search some keyword, e.g. `life`, input
+
 ```text
 search life
 ```
@@ -34,9 +59,12 @@ search life
 For convenience, the jar file have been attached as deliverable. You have to use jdk21 for testing.
 
 ## Homework Tasks
+
 ### (1) Complete the setup of your toy search engine system with initial 100 documents, show your index with 5 example keywords (index terms).
+
 In the first task, we crawled 100 documents from wikipedia.org, then create index for these documents.
 We input `craw 100` to craw 100 documents from wiki, and then input `index` to create index for the documents we crawled.
+
 ```text
 java -jar target/LuceneDemo-1.0-SNAPSHOT.jar
 Crawler/Indexer/Searcher for wikipedia.org
@@ -158,6 +186,7 @@ Total time: 180ms
 To test our search engine, we use keywords `team`, `election`, `summer`, `year`, `December` to search.
 
 Result for `team`:
+
 ```text
 Searching for team
 Found 0 hits hits.
@@ -165,6 +194,7 @@ Total time: 6ms
 ```
 
 Result for `election`:
+
 ```text
 Searching for election
 Found 1 hits hits.
@@ -177,6 +207,7 @@ Introduction: The Ntabankulu Local Municipality council consists of thirty-eight
 ```
 
 Result for `summer`:
+
 ```text
 Searching for summer
 Found 1 hits hits.
@@ -189,6 +220,7 @@ Introduction: Imène Ouneyssa Cherif Sahraoui (Arabic: إيمان ونعيسة �
 ```
 
 Result for `year`:
+
 ```text
 Searching for year
 Found 2 hits hits.
@@ -220,7 +252,9 @@ Introduction: Frederik Harold Dubord (December 14, 1891 – October 14, 1964) wa
 ```
 
 ### (2) Add 1 web document and show that this document will be indexed and searched using your toy search engine. Also show the update of your index.
+
 We crawled 1 more document and recreate the index.
+
 ```text
 Input your action:
 craw 1
@@ -237,6 +271,7 @@ Total time: 20ms
 ```
 
 Then we test if the new document can be searched.
+
 ```text
 Input your action:
 search Anna
@@ -252,7 +287,9 @@ Introduction: Anna Kyōyama (恐山 アンナ, Kyōyama Anna) is a fictional cha
 ```
 
 ### (3) add 100 documents and show that all 100 documents are indexed and searched by your toy search engine. Also show the update of your index.
+
 We crawled 100 more document and recreate the index.
+
 ```text
 Input your action:
 craw 100
@@ -370,6 +407,7 @@ Total time: 26ms
 Then we tested the new 100 documents can be searched:
 
 First keyword `magae` to search for Magae Station:
+
 ```text
 Input your action:
 search magae
@@ -385,6 +423,7 @@ Introduction: Magae Station (馬替駅, Magae-eki) is a railway station on the H
 ```
 
 Second keyword `December` to show that we can search both the first 100 documents and the 100 documents we added later:
+
 ```text
 Searching for December
 Found 4 hits hits.
@@ -408,6 +447,7 @@ Introduction: Joseph Hyman Lookstein (Hebrew: יוסף לוקשטיין; Decembe
 ### (4) Perform measurement on adding K documents to your toy search engine. For example, measuring performance of adding K documents and display the time cost on y-axis with x-axis varing K from 100, 200, 300
 
 Now we restart our program. To measure the performance, we have an experiment with the inputs:
+
 ```text
 java -Xint -jar --add-modules jdk.incubator.vector target/LuceneDemo-1.0-SNAPSHOT.jar
 
@@ -426,12 +466,14 @@ craw 300
 index
 search December
 ```
+
 Everytime we use `craw 100`, there will be 100 additional documents crawled from wiki. When applying `index`, index will be create from all the documents in cache.
 As a result, k=100, k=200, k=300 will be measuted.
 
 The result is:
 
 k=100, total=100
+
 ```text
 Creating index
 Indexing complete!
@@ -443,6 +485,7 @@ Total time: 7ms
 ```
 
 k=200, total=300
+
 ```text
 Creating index
 Indexing complete!
@@ -455,6 +498,7 @@ Total time: 10ms
 ```
 
 k=300, total=600
+
 ```text
 Creating index
 Indexing complete!
@@ -482,18 +526,41 @@ The performance measurement has been down in (4). For k=100, k=200, k=300, we ca
 For improvement, our search engine is build with in-memory storage, there is no persistence data in the storage. It ensures fast indexing and searching, but it lacks the ability to function with large amount of documents. Persist data option may be provided.
 
 ## Deliverable
+
 ### (a) Source code and executable with readme.
+
 Attached.
+
 ### (b) Discuss the design of your crawler: Pros and cons.
+
 See (5) before
+
 ### (c) Screen Shots of your toy search engine command lines or GUI
+
 ![Image for CLI](./doc/sc1.png)
 ![Image for crawling](./doc/sc2.png)
 ![Image for indexing](./doc/sc3.png)
 ![Image for searching](./doc/sc4.png)
+
 ### (d) Index and search performance in excel or tabular format
+
 [Index Performance](./performance_index.csv)
+
+![Image for index performance](./doc/ex1.png)
+
 [Search Performance](./performance_search.csv)
+
+![Image for index performance](./doc/ex2.png)
+
 ### (e) Example index entries.
+
 See (1) (2) (3) before
+
 ### (f) Discuss your experience and lessons learned.
+
+In this project, I gained great learning experience in building a simple search engine with components like crawling, indexing, and searching. Specifically, the experience to use Apache Lucene and designing a basic system for document retrieval.
+For Crawling, jsoup is used to fetch random Wikipedia pages worked well but highlighted challenges like handling large-scale or complex websites.
+For indexing and searching, Lucene makes indexing straightforward, but rebuilding the index for every update showed the need for incremental indexing in real-world systems.
+
+In this project, I learnt that 1) incremental indexing would improve efficiency when adding new documents. 2)A better crawler and user-friendly interface would enhance usability and practicality. 3) the performance drops with the increase of document amounts.
+Overall, I learnt basics of search engine design, performance trade-offs, and areas for improvement, which will be useful for future development.
