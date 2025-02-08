@@ -1,4 +1,4 @@
-package net.rm2.search;
+package net.rm2.fileshare.search;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;

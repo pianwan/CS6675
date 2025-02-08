@@ -1,6 +1,6 @@
-package net.rm2.search;
+package net.rm2.fileshare.search;
 
-import net.rm2.crawler.Crawler;
+import net.rm2.fileshare.crawler.Crawler;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;

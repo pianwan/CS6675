@@ -1,0 +1,78 @@
+version: '3.8'
+
+services:
+  peer1:
+    build: .
+    container_name: peer1
+    networks:
+      - p2p
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./p1/shared_files:/usr/p2p/shared_files
+      - ./p1/logs:/usr/p2p/logs
+      - ./p1/connection:/usr/p2p/connection
+      - ./p1/download_files:/usr/p2p/download_files
+    environment:
+      HOST_NAME: peer1
+      RANDOM: true
+    ports:
+      - "5501:5501"
+      - "20000:20000"
+  peer2:
+    build: .
+    container_name: peer2
+    networks:
+      - p2p
+    environment:
+      HOST_NAME: peer2
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./p2/shared_files:/usr/p2p/shared_files
+      - ./p2/logs:/usr/p2p/logs
+      - ./p2/connection:/usr/p2p/connection
+  peer3:
+    build: .
+    container_name: peer3
+    networks:
+      - p2p
+    environment:
+      HOST_NAME: peer3
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./p3/shared_files:/usr/p2p/shared_files
+      - ./p3/logs:/usr/p2p/logs
+      - ./p3/connection:/usr/p2p/connection
+  peer4:
+    build: .
+    container_name: peer4
+    networks:
+      - p2p
+    environment:
+      HOST_NAME: peer4
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./p4/shared_files:/usr/p2p/shared_files
+      - ./p4/logs:/usr/p2p/logs
+      - ./p4/connection:/usr/p2p/connection
+  peer5:
+    build: .
+    container_name: peer5
+    networks:
+      - p2p
+    environment:
+      HOST_NAME: peer5
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./p5/shared_files:/usr/p2p/shared_files
+      - ./p5/logs:/usr/p2p/logs
+      - ./p5/connection:/usr/p2p/connection
+
+
+
+networks:
+  p2p: # Actually, we have a default bridged network here, so this is not necessary. But to ensure the clarity I define a network named p2p here.

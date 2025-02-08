@@ -1,4 +1,4 @@
-package net.rm2.crawler;
+package net.rm2.fileshare.crawler;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

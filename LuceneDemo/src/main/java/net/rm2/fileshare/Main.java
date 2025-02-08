@@ -1,8 +1,8 @@
-package net.rm2;
+package net.rm2.fileshare;
 
-import net.rm2.crawler.Crawler;
-import net.rm2.search.Indexer;
-import net.rm2.search.Searcher;
+import net.rm2.fileshare.crawler.Crawler;
+import net.rm2.fileshare.search.Indexer;
+import net.rm2.fileshare.search.Searcher;
 import org.apache.lucene.document.Document;
 
 import java.util.InputMismatchException;
