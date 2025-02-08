@@ -7,7 +7,10 @@ In this homework, I select `Option (1)` Once you complete the setup of your toy 
 
 **I build a P2P file sharing system from scratch, which is "You may also create a P2P application of your own" in the homework description.**
 
-In the experiment, the peer shares pdf files download from Wiki (https://en.wikipedia.org/). Some of the pdfs are randomly selected, some are manually selected.
+In the experiment, each peer shares PDF files downloaded from Wikipedia (https://en.wikipedia.org/). Some files were randomly selected, while others were manually chosen.
+The system supports file searching and downloading, and performance is measured in terms of latency and throughput.
+
+One container is equal to a peer in the p2p system. I use Docker Swarm to build network across peers.
 
 ## Build/Run
 
@@ -22,7 +25,7 @@ Before running the container, you have to build the p2p file sharing system firs
 ```bash
 mvn clean package
 ```
-Then, you can find a `P2P-1.0-SNAPSHOT.jar` file in `./target`.
+The compiled JAR file `P2P-1.0-SNAPSHOT.jar` will be located in `./target`.
 
 With this file, you can build the docker image with:
 
@@ -64,7 +67,7 @@ Users can use the client to interact with the node (e.g. searching, connecting t
 To search a file, call `searchFile(String name)` method. You can input any sentence you want to search in the command line interface since the client is built with the jar.
 
 
-### Overlay
+### Overlay Network
 ![p2p](./docs/5peers.png)
 
 This is an example overlay for the testing, you can choose any overlay you want. This overlay can be easily modified, to modify peer1, go `./p1/connection`
@@ -84,7 +87,7 @@ Each peer maintains connections in its configuration file (./pX/connection for p
 ### Query
 Two methods of querying are implemented.
 
-- Flooding: We query all neighbours. This is efficient in a small p2p network.
+- Flooding (default): We query all neighbours. This is efficient in a small p2p network.
 
 - RandomWalk: We query random neighbour. This reduces workload in a large p2p network.
 
@@ -349,9 +352,9 @@ Comparison
 | throughput (40 queries) |  113.7/s |  158.10/s  |
 
 ### Discuss latency and throughput of your toy P2P system under the two alternative routing protocols in terms of pros and cons.
-**Flooding**
-
-Broadcasts queries to all neighbors.
+**Flooding** broadcasts queries to all neighbors. It is  an efficient approach for small networks where fast query resolution is required.
+This method ensures a high success rate, as the file request reaches multiple peers simultaneously. However, the major drawback is its high network traffic, which results in redundant messages and excessive bandwidth consumption.
+As the network grows, flooding becomes unsustainable due to its exponential increase in message transmissions, making it poorly scalable for large networks.
 
 Pros:
 - Fast in small networks.
@@ -359,11 +362,9 @@ Pros:
 
 Cons:
 - High network traffic.
-- Not scalable (exponential message growth).
+- Not scalable (exponential growth).
 
-**Random Walk**
-
-Queries a random neighbor instead of broadcasting.
+**Random Walk** queries a random neighbor instead of broadcasting. This significantly reduces network load and minimizes redundant requests, making it a more efficient choice for large-scale P2P networks. However, its primary disadvantage is the higher query failure rate, as the request might not reach a peer containing the desired file within a limited number of hops. Additionally, the response time may be slower, since the query propagates sequentially instead of being processed in parallel by multiple peers. Despite these limitations, Random Walk provides a more scalable alternative to Flooding, especially in decentralized and large-scale peer-to-peer systems.
 
 Pros:
 - Reduces network load.
@@ -372,22 +373,18 @@ Pros:
 Cons:
 - Higher query failure rate.
 - Slower response time.
+
 ### Discuss scalability, reliability and anonymity of your P2P system.
-Scalability
-- Flooding doesn’t scale well (exponential query explosion).
-- Random Walk scales better (but has lower success rates).
-- Possible Improvement: Implement a Hybrid Routing system (Flooding + Random Walk).
+The scalability of the P2P systems depends on the query method utilized. Flooding does not scale very well because huge amounts of queries lead to an exponential traffic increase. All peers send relevant queries to all other peers within the vicinity, which results in heavy system loads in vast networks. On the other hand, Random Walk has stronger scalability due to the limitation on domination rate of the query. However, the efficiency is lower since there is no assurance that the query will be served within a reasonable time frame. One of the ways to sustain good scalability while improving the system performance is to introduce a Hybrid Routing System that takes advantage of both techniques. Flooding can be used for a greater number of local peers while Random Walk can be used for those situated further away to diminish wasted traffic.
 
-Reliability
-- If a peer goes offline, its connections are lost.
-- In Flooding, as long as any peer has the file, the request succeeds.
-- In Random Walk, if the query is misrouted, it fails.
-- Possible Improvement: Implement a replication mechanism where multiple peers store copies of files.
 
-Anonymity
-- Flooding exposes queries to all peers, reducing anonymity.
-- Random Walk improves anonymity, as only a small subset of peers sees the query.
-- Possible Improvement: Implement Tor-like onion routing in the P2P system.
+For reliability, the system’s performance is influenced by the availability of peers. 
+If a peer goes offline, its stored files become inaccessible, impacting query success rates. 
+Flooding ensures higher reliability, as long as at least one peer has the requested file, while Random Walk is more prone to failures if the query is misrouted and does not reach the correct peer. 
+
+For anonymity, Flooding exposes queries to all peers, making it easy for others to track search patterns and query origins.
+Random Walk improves anonymity, as only a subset of peers processes the query, limiting exposure. 
+
 ### [Option] Discuss any additional functionality you wish to introduce if any.
 - Caching: Peers cache popular files to reduce redundant requests.
 - Data Encryption: Encrypt file transfers for improved security.
